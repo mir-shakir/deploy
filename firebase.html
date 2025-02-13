@@ -20,7 +20,10 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        gtag('config', 'G-2CVMP23ZD9', {cookie_flags: 'SameSite=None;Secure'});
+        gtag('config', 'G-2CVMP23ZD9', {
+    'cookie_domain': 'auto', // Or your custom domain
+    'debug_mode': true
+});
 
         // gtag('config', 'G-2CVMP23ZD9');
         // gtag('config', 'G-2CVMP23ZD9', {
