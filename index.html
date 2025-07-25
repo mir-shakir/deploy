@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LayoutCraft - AI Visual Asset Generator | Coming Soon</title>
-    <meta name="description" content="The future of automated design is coming. Get early access to LayoutCraft, the AI-powered tool that creates stunning visuals from a simple text prompt.">
+    <title>LayoutCraft - From AI Art to Production-Ready Designs</title>
+    <meta name="description" content="Tired of chaotic AI images? LayoutCraft is the first AI design tool that understands layout, creating structured, pixel-perfect visuals for your projects.">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -16,7 +16,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    <!-- Google tag (gtag.js) - Your existing tag -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJ5GEKEX8H"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -81,7 +81,6 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
-        /* FIX for hero text visibility */
         .hero-section {
             position: relative;
             z-index: 10;
@@ -108,7 +107,7 @@
                 </div>
                 <div>
                     <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">LayoutCraft</h1>
-                    <p class="text-sm text-gray-600 font-medium">AI Visual Designer</p>
+                    <p class="text-sm text-gray-600 font-medium">AI That Understands Design</p>
                 </div>
             </div>
         </header>
@@ -116,9 +115,11 @@
         <!-- Hero Section -->
         <section class="text-center mb-24 md:mb-32 hero-section">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">The Future of Automated Design is Coming</h2>
+                <!-- UPDATED HEADLINE -->
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">Stop Generating AI Art. Start Creating Designs.</h2>
+                <!-- UPDATED SUB-HEADLINE -->
                 <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-                    Stop wrestling with complex design tools. LayoutCraft uses AI to turn your ideas into stunning, professional-quality visuals in seconds. Get ready to create like never before.
+                    Tired of chaotic AI images with messy layouts and unreadable text? LayoutCraft is the first AI tool that creates structured, pixel-perfect visuals ready for your blog, social media, and marketing.
                 </p>
                 <a href="#feedback-form" class="primary-btn text-lg">Get Early Access & Give Feedback</a>
             </div>
@@ -127,20 +128,23 @@
         <!-- How It Works Section -->
         <section class="max-w-5xl mx-auto mb-24 md:mb-32">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- UPDATED STEP 1 -->
                 <div class="glass-card p-8">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">✍️</span></div>
-                    <h3 class="text-xl font-bold mb-2">1. Describe</h3>
-                    <p class="text-gray-600">Simply write a prompt describing the visual you need.</p>
+                    <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">🎯</span></div>
+                    <h3 class="text-xl font-bold mb-2">1. Your Idea</h3>
+                    <p class="text-gray-600">Describe the visual asset you need, just like you would to a human designer.</p>
                 </div>
+                <!-- UPDATED STEP 2 -->
                 <div class="glass-card p-8">
                     <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">✨</span></div>
-                    <h3 class="text-xl font-bold mb-2">2. Generate</h3>
-                    <p class="text-gray-600">Our AI engine crafts a unique, high-quality design in seconds.</p>
+                    <h3 class="text-xl font-bold mb-2">2. Structured Generation</h3>
+                    <p class="text-gray-600">Our layout-aware AI builds a professional design with clean composition and typography.</p>
                 </div>
+                <!-- UPDATED STEP 3 -->
                 <div class="glass-card p-8">
                     <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">🚀</span></div>
-                    <h3 class="text-xl font-bold mb-2">3. Launch</h3>
-                    <p class="text-gray-600">Download your asset and use it instantly for your project.</p>
+                    <h3 class="text-xl font-bold mb-2">3. Perfect Asset</h3>
+                    <p class="text-gray-600">Download a production-ready visual that's ready to use, no cleanup required.</p>
                 </div>
             </div>
         </section>
@@ -149,8 +153,9 @@
         <section id="feedback-form" class="max-w-2xl mx-auto">
             <div class="glass-card p-8 md:p-12">
                 <div x-show="!submitted">
-                    <h3 class="text-3xl font-bold text-center mb-4">Get Early Access & Shape the Future</h3>
-                    <p class="text-center text-gray-600 mb-8">Join our waitlist and share your thoughts. Your feedback will help us build the best design tool for you.</p>
+                    <!-- UPDATED FORM TEXT -->
+                    <h3 class="text-3xl font-bold text-center mb-4">Help Us End Bad AI Design</h3>
+                    <p class="text-center text-gray-600 mb-8">Join our waitlist to get early access and help shape the first AI tool for real-world design assets.</p>
                     <form @submit.prevent="handleSubmit" class="space-y-4">
                         <div>
                             <label for="email" class="sr-only">Email Address</label>
@@ -160,7 +165,7 @@
                         </div>
                         <div>
                             <label for="feedback" class="sr-only">Feedback or Comments</label>
-                            <textarea id="feedback" x-model="feedbackMessage" placeholder="Any thoughts or suggestions? (Optional)"
+                            <textarea id="feedback" x-model="feedbackMessage" placeholder="What's your biggest frustration with current AI tools? (Optional)"
                                 class="w-full h-24 px-4 py-3 rounded-lg border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                                 aria-label="Feedback or Comments"></textarea>
                         </div>
@@ -174,7 +179,7 @@
                 <div x-show="submitted" class="text-center">
                      <div class="w-20 h-20 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center"><span class="text-4xl">🎉</span></div>
                     <h3 class="text-3xl font-bold mb-4">You're on the list!</h3>
-                    <p class="text-gray-600">Thank you for your interest and feedback. We'll be in touch soon with exciting news and your exclusive early access link.</p>
+                    <p class="text-gray-600">Thank you for joining the mission to fix AI design. We'll be in touch soon with your exclusive early access link.</p>
                 </div>
             </div>
         </section>
@@ -205,11 +210,8 @@
                         return;
                     }
 
-                    // --- FIRE AND FORGET ---
-                    // 1. Immediately show success to the user.
                     this.submitted = true;
 
-                    // 2. Track the event immediately.
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'feedback_submission', {
                             'event_category': 'Engagement',
@@ -217,7 +219,6 @@
                         });
                     }
 
-                    // !!! IMPORTANT: Replace this with your actual Google Apps Script URL !!!
                     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxrauwzTxDfjaoGGDNSYNXnHOHx5c4HVGpvTWtosEPmCHVYfFOP4Egs8cE2858JXcMgw/exec';
 
                     const payload = {
@@ -226,20 +227,17 @@
                         source: 'Landing Page Waitlist'
                     };
                     
-                    // 3. Send the API call in the background without waiting for it.
-                    // This uses a workaround to avoid CORS issues with Google Scripts.
                     fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'no-cors', // This prevents the browser from blocking the request
+                        mode: 'no-cors',
                         cache: 'no-cache',
                         headers: {
                           'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(payload)
                     }).then(() => {
-                        console.log('Feedback submission request sent to Google Script.');
+                        console.log('Feedback submission request sent.');
                     }).catch(err => {
-                        // This will only catch network errors, not API errors.
                         console.error('Feedback submission network error:', err);
                     });
                 }
