@@ -82,6 +82,11 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
+        /* FIX for hero text visibility */
+        .hero-section {
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
 
@@ -110,13 +115,13 @@
         </header>
 
         <!-- Hero Section -->
-        <section class="text-center mb-24 md:mb-32">
+        <section class="text-center mb-24 md:mb-32 hero-section">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">The Future of Automated Design is Coming</h2>
                 <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
                     Stop wrestling with complex design tools. LayoutCraft uses AI to turn your ideas into stunning, professional-quality visuals in seconds. Get ready to create like never before.
                 </p>
-                <a href="#early-access" class="primary-btn text-lg">Get Early Access</a>
+                <a href="#feedback-form" class="primary-btn text-lg">Get Early Access & Give Feedback</a>
             </div>
         </section>
 
@@ -144,17 +149,28 @@
             </div>
         </section>
 
-        <!-- Early Access Form Section -->
-        <section id="early-access" class="max-w-2xl mx-auto">
+        <!-- Feedback Form Section -->
+        <section id="feedback-form" class="max-w-2xl mx-auto">
             <div class="glass-card p-8 md:p-12">
                 <div x-show="!submitted">
-                    <h3 class="text-3xl font-bold text-center mb-4">Be the First to Know</h3>
-                    <p class="text-center text-gray-600 mb-8">Join our exclusive waitlist for early access, feature updates, and special launch offers. We won't spam you.</p>
-                    <form @submit.prevent="handleSubmit" class="flex flex-col sm:flex-row gap-4">
-                        <input type="email" x-model="email" placeholder="Enter your email address" required 
-                            class="flex-grow w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" 
-                            aria-label="Email Address">
-                        <button type="submit" class="primary-btn" :disabled="!email.trim()">Notify Me</button>
+                    <h3 class="text-3xl font-bold text-center mb-4">Get Early Access & Shape the Future</h3>
+                    <p class="text-center text-gray-600 mb-8">Join our exclusive waitlist and share your thoughts. Your feedback will help us build the best design tool for you.</p>
+                    <form @submit.prevent="handleSubmit" class="space-y-4">
+                        <div>
+                            <label for="email" class="sr-only">Email Address</label>
+                            <input id="email" type="email" x-model="email" placeholder="Enter your email address" required 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" 
+                                aria-label="Email Address">
+                        </div>
+                        <div>
+                            <label for="feedback" class="sr-only">Feedback or Comments</label>
+                            <textarea id="feedback" x-model="feedbackMessage" placeholder="Any thoughts or suggestions? (Optional)"
+                                class="w-full h-24 px-4 py-3 rounded-lg border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                                aria-label="Feedback or Comments"></textarea>
+                        </div>
+                        <button type="submit" class="primary-btn w-full" :disabled="!email.trim()">
+                            <span>Join Waitlist & Send Feedback</span>
+                        </button>
                     </form>
                     <p x-show="error" x-text="error" class="text-red-500 text-sm text-center mt-4"></p>
                 </div>
@@ -162,7 +178,7 @@
                 <div x-show="submitted" class="text-center">
                      <div class="w-20 h-20 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center"><span class="text-4xl">🎉</span></div>
                     <h3 class="text-3xl font-bold mb-4">You're on the list!</h3>
-                    <p class="text-gray-600">Thank you for your interest in LayoutCraft. We'll be in touch soon with exciting news and your exclusive early access link.</p>
+                    <p class="text-gray-600">Thank you for your interest and feedback. We'll be in touch soon with exciting news and your exclusive early access link.</p>
                 </div>
             </div>
         </section>
@@ -176,11 +192,12 @@
     <script>
         function landingPage() {
             return {
+                API_BASE_URL: 'https://layoutcraft-backend.onrender.com',
                 email: '',
+                feedbackMessage: '',
                 submitted: false,
                 error: '',
                 
-                // Simple email validation
                 validateEmail(email) {
                     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return re.test(String(email).toLowerCase());
@@ -193,23 +210,40 @@
                         return;
                     }
 
-                    // Send the email as a custom event to Google Analytics
+                    // --- FIRE AND FORGET ---
+                    // 1. Immediately show success to the user.
+                    this.submitted = true;
+
+                    // 2. Track the event immediately.
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'early_access_signup', {
+                        gtag('event', 'feedback_submission', {
                             'event_category': 'Engagement',
-                            'event_label': 'Landing Page Signup',
-                            // Note: Sending PII like emails to GA is against their terms.
-                            // A better practice is to send an anonymized user ID or just the event itself.
-                            // For this purpose, we'll just track the conversion event.
+                            'event_label': 'Landing Page Feedback',
                         });
                     }
-                    
-                    console.log(`Email submitted for early access: ${this.email}`);
-                    this.submitted = true;
+
+                    // 3. Send the API call in the background without waiting for it.
+                    fetch(`${this.API_BASE_URL}/api/feedback`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: this.feedbackMessage.trim() || 'No feedback provided.',
+                            email: this.email.trim(),
+                            source: 'Landing Page Waitlist'
+                        })
+                    }).then(response => {
+                        if (!response.ok) {
+                           // Log errors for debugging, but don't show them to the user.
+                           console.error('Feedback API call failed:', response.statusText);
+                        } else {
+                           console.log('Feedback submitted successfully in the background.');
+                        }
+                    }).catch(err => {
+                        console.error('Feedback API call failed:', err);
+                    });
                 }
             }
         }
     </script>
 </body>
 </html>
-
