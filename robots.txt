@@ -1,0 +1,1 @@
+Allow all web crawlers to access all contentUser-agent: *Allow: /Location of the sitemapSitemap: https://layoutcraft.tech/sitemap.xml
