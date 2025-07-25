@@ -1,1 +1,8 @@
-Allow all web crawlers to access all contentUser-agent: *Allow: /Location of the sitemapSitemap: https://layoutcraft.tech/sitemap.xml
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://layoutcraft.tech/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1
