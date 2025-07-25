@@ -26,7 +26,6 @@
     </script>
 
     <style>
-        /* Reusing the brilliant CSS from your MVP */
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --glass-bg: rgba(255, 255, 255, 0.25);
@@ -128,23 +127,20 @@
         <!-- How It Works Section -->
         <section class="max-w-5xl mx-auto mb-24 md:mb-32">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <!-- Step 1 -->
                 <div class="glass-card p-8">
                     <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">✍️</span></div>
                     <h3 class="text-xl font-bold mb-2">1. Describe</h3>
-                    <p class="text-gray-600">Simply write a prompt describing the visual you need. Be as detailed or as simple as you like.</p>
+                    <p class="text-gray-600">Simply write a prompt describing the visual you need.</p>
                 </div>
-                <!-- Step 2 -->
                 <div class="glass-card p-8">
                     <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">✨</span></div>
                     <h3 class="text-xl font-bold mb-2">2. Generate</h3>
-                    <p class="text-gray-600">Our AI engine analyzes your words and crafts a unique, high-quality design in seconds.</p>
+                    <p class="text-gray-600">Our AI engine crafts a unique, high-quality design in seconds.</p>
                 </div>
-                <!-- Step 3 -->
                 <div class="glass-card p-8">
                     <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">🚀</span></div>
                     <h3 class="text-xl font-bold mb-2">3. Launch</h3>
-                    <p class="text-gray-600">Download your new visual asset and use it instantly for your blog, social media, or presentation.</p>
+                    <p class="text-gray-600">Download your asset and use it instantly for your project.</p>
                 </div>
             </div>
         </section>
@@ -154,7 +150,7 @@
             <div class="glass-card p-8 md:p-12">
                 <div x-show="!submitted">
                     <h3 class="text-3xl font-bold text-center mb-4">Get Early Access & Shape the Future</h3>
-                    <p class="text-center text-gray-600 mb-8">Join our exclusive waitlist and share your thoughts. Your feedback will help us build the best design tool for you.</p>
+                    <p class="text-center text-gray-600 mb-8">Join our waitlist and share your thoughts. Your feedback will help us build the best design tool for you.</p>
                     <form @submit.prevent="handleSubmit" class="space-y-4">
                         <div>
                             <label for="email" class="sr-only">Email Address</label>
@@ -192,7 +188,6 @@
     <script>
         function landingPage() {
             return {
-                API_BASE_URL: 'https://layoutcraft-backend.onrender.com',
                 email: '',
                 feedbackMessage: '',
                 submitted: false,
@@ -222,24 +217,30 @@
                         });
                     }
 
+                    // !!! IMPORTANT: Replace this with your actual Google Apps Script URL !!!
+                    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxrauwzTxDfjaoGGDNSYNXnHOHx5c4HVGpvTWtosEPmCHVYfFOP4Egs8cE2858JXcMgw/exec';
+
+                    const payload = {
+                        email: this.email.trim(),
+                        message: this.feedbackMessage.trim() || 'No feedback provided.',
+                        source: 'Landing Page Waitlist'
+                    };
+                    
                     // 3. Send the API call in the background without waiting for it.
-                    fetch(`${this.API_BASE_URL}/api/feedback`, {
+                    // This uses a workaround to avoid CORS issues with Google Scripts.
+                    fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            message: this.feedbackMessage.trim() || 'No feedback provided.',
-                            email: this.email.trim(),
-                            source: 'Landing Page Waitlist'
-                        })
-                    }).then(response => {
-                        if (!response.ok) {
-                           // Log errors for debugging, but don't show them to the user.
-                           console.error('Feedback API call failed:', response.statusText);
-                        } else {
-                           console.log('Feedback submitted successfully in the background.');
-                        }
+                        mode: 'no-cors', // This prevents the browser from blocking the request
+                        cache: 'no-cache',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(() => {
+                        console.log('Feedback submission request sent to Google Script.');
                     }).catch(err => {
-                        console.error('Feedback API call failed:', err);
+                        // This will only catch network errors, not API errors.
+                        console.error('Feedback submission network error:', err);
                     });
                 }
             }
