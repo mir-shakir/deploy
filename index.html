@@ -36,6 +36,7 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
         .glass-card {
             background: var(--glass-bg);
@@ -85,21 +86,39 @@
             position: relative;
             z-index: 10;
         }
+        .prompt-box {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        .style-badge {
+            display: inline-block;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-gray-800">
     
-    <!-- Animated background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
         <div class="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-pink-400/20 to-indigo-600/20 rounded-full blur-3xl animate-float-delayed"></div>
     </div>
 
-    <!-- Main Content -->
     <main class="relative z-10 p-4 md:p-8" x-data="landingPage()">
         
-        <!-- Header -->
         <header class="text-center mb-16 md:mb-24">
             <div class="inline-flex items-center space-x-3">
                 <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg" aria-hidden="true">
@@ -112,47 +131,73 @@
             </div>
         </header>
 
-        <!-- Hero Section -->
         <section class="text-center mb-24 md:mb-32 hero-section">
             <div class="max-w-4xl mx-auto">
-                <!-- UPDATED HEADLINE -->
                 <h2 class="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">Stop Generating AI Art. Start Creating Designs.</h2>
-                <!-- UPDATED SUB-HEADLINE -->
                 <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
                     Tired of chaotic AI images with messy layouts and unreadable text? LayoutCraft is the first AI tool that creates structured, pixel-perfect visuals ready for your blog, social media, and marketing.
                 </p>
-                
                 <a href="#feedback-form" class="primary-btn text-lg">
-
                     <span class="sm:hidden">Join Waitlist</span>
-
                     <span class="hidden sm:inline">Get Early Access & Give Feedback</span>
-
                 </a>
             </div>
         </section>
+        
+        <!-- UPDATED: "Style Gallery" Section -->
+        <section class="max-w-6xl mx-auto mb-24 md:mb-32">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold">Your Words, Your Design. Perfected by AI.</h3>
+                <p class="text-lg text-gray-600 mt-4">LayoutCraft follows your instructions precisely, giving you creative control while ensuring a professional result.</p>
+            </div>
 
-        <!-- How It Works Section -->
-        <section class="max-w-5xl mx-auto mb-24 md:mb-32">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <!-- UPDATED STEP 1 -->
-                <div class="glass-card p-8">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">🎯</span></div>
-                    <h3 class="text-xl font-bold mb-2">1. Your Idea</h3>
-                    <p class="text-gray-600">Describe the visual asset you need, just like you would to a human designer.</p>
+            <div class="flex flex-col gap-16 md:gap-24">
+
+                <!-- Example 1: Dark Neon Tech -->
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                    <div class="w-full md:w-2/5 order-2 md:order-1">
+                        <span class="style-badge">Style: Dark Neon Tech</span>
+                        <h4 class="font-bold text-2xl mt-4 mb-2">You control the content and style.</h4>
+                        <p class="text-gray-600 mb-6">Provide a simple prompt with specific instructions for text, colors, and layout.</p>
+                        <p class="prompt-box">"Create a header for a tech meetup. Text: 'AI Innovators Meetup'. Use a dark background with bright blue neon accents. Place the text in the center."</p>
+                    </div>
+                    <div class="w-full md:w-3/5 order-1 md:order-2">
+                        <div class="glass-card p-4 transform transition-transform duration-500 hover:scale-105">
+                            <img src="images/example-neon-tech.png" alt="Example of a tech meetup header in a dark neon style" class="rounded-lg shadow-2xl w-full">
+                        </div>
+                    </div>
                 </div>
-                <!-- UPDATED STEP 2 -->
-                <div class="glass-card p-8">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">✨</span></div>
-                    <h3 class="text-xl font-bold mb-2">2. Structured Generation</h3>
-                    <p class="text-gray-600">Our layout-aware AI builds a professional design with clean composition and typography.</p>
+
+                <!-- Example 2: Vibrant Gradient -->
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                    <div class="w-full md:w-3/5 order-1 md:order-1">
+                        <div class="glass-card p-4 transform transition-transform duration-500 hover:scale-105">
+                             <img src="images/example-summer-sale.png" alt="Example of a summer sale graphic with vibrant gradients" class="rounded-lg shadow-2xl w-full">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/5 order-2 md:order-2">
+                        <span class="style-badge">Style: Vibrant Gradient</span>
+                        <h4 class="font-bold text-2xl mt-4 mb-2">The AI handles the creative details.</h4>
+                        <p class="text-gray-600 mb-6">LayoutCraft takes your core requirements and builds a beautiful, balanced design around them.</p>
+                        <p class="prompt-box">"A promotional graphic for a summer sale. Text: 'Summer Sale - 50% Off'. Use a vibrant orange and yellow gradient. Make the text large and bold."</p>
+                    </div>
                 </div>
-                <!-- UPDATED STEP 3 -->
-                <div class="glass-card p-8">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-white/50 rounded-2xl flex items-center justify-center"><span class="text-3xl">🚀</span></div>
-                    <h3 class="text-xl font-bold mb-2">3. Perfect Asset</h3>
-                    <p class="text-gray-600">Download a production-ready visual that's ready to use, no cleanup required.</p>
+                
+                <!-- Example 3: Minimal Luxury -->
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                    <div class="w-full md:w-2/5 order-2 md:order-1">
+                        <span class="style-badge">Style: Minimal Luxury</span>
+                        <h4 class="font-bold text-2xl mt-4 mb-2">Get exactly what you ask for.</h4>
+                        <p class="text-gray-600 mb-6">Need something specific? LayoutCraft respects your constraints, delivering pixel-perfect, production-ready assets.</p>
+                        <p class="prompt-box">"A simple, elegant website hero background. Use a cream color with a single, thin gold line on the left side. No text."</p>
+                    </div>
+                    <div class="w-full md:w-3/5 order-1 md:order-2">
+                        <div class="glass-card p-4 transform transition-transform duration-500 hover:scale-105">
+                            <img src="images/example-luxury-minimal.png" alt="Example of a minimalist luxury background" class="rounded-lg shadow-2xl w-full">
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </section>
 
@@ -160,7 +205,6 @@
         <section id="feedback-form" class="max-w-2xl mx-auto">
             <div class="glass-card p-8 md:p-12">
                 <div x-show="!submitted">
-                    <!-- UPDATED FORM TEXT -->
                     <h3 class="text-3xl font-bold text-center mb-4">Help Us End Bad AI Design</h3>
                     <p class="text-center text-gray-600 mb-8">Join our waitlist to get early access and help shape the first AI tool for real-world design assets.</p>
                     <form @submit.prevent="handleSubmit" class="space-y-4">
@@ -182,7 +226,6 @@
                     </form>
                     <p x-show="error" x-text="error" class="text-red-500 text-sm text-center mt-4"></p>
                 </div>
-                <!-- Success Message -->
                 <div x-show="submitted" class="text-center">
                      <div class="w-20 h-20 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center"><span class="text-4xl">🎉</span></div>
                     <h3 class="text-3xl font-bold mb-4">You're on the list!</h3>
@@ -191,7 +234,6 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="text-center mt-16 md:mt-24">
             <p class="text-sm text-gray-500">&copy; 2025 LayoutCraft. All rights reserved.</p>
         </footer>
@@ -204,43 +246,31 @@
                 feedbackMessage: '',
                 submitted: false,
                 error: '',
-                
                 validateEmail(email) {
                     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return re.test(String(email).toLowerCase());
                 },
-
                 handleSubmit() {
                     this.error = '';
                     if (!this.validateEmail(this.email)) {
                         this.error = 'Please enter a valid email address.';
                         return;
                     }
-
                     this.submitted = true;
-
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'feedback_submission', {
-                            'event_category': 'Engagement',
-                            'event_label': 'Landing Page Feedback',
-                        });
+                        gtag('event', 'feedback_submission', {'event_category': 'Engagement','event_label': 'Landing Page Feedback',});
                     }
-
-                    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxrauwzTxDfjaoGGDNSYNXnHOHx5c4HVGpvTWtosEPmCHVYfFOP4Egs8cE2858JXcMgw/exec';
-
+                    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
                     const payload = {
                         email: this.email.trim(),
                         message: this.feedbackMessage.trim() || 'No feedback provided.',
                         source: 'Landing Page Waitlist'
                     };
-                    
                     fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
                         cache: 'no-cache',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(payload)
                     }).then(() => {
                         console.log('Feedback submission request sent.');
