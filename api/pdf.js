@@ -1,4 +1,5 @@
-const chromium = require('chrome-aws-lambda');
+const chromium = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
 
 // This is the HTML template for the final PDF.
 function getHtml(data) {
@@ -54,18 +55,17 @@ function getHtml(data) {
     </html>`;
 }
 
-// This is the main function that Vercel will run.
 module.exports = async (req, res) => {
     let browser = null;
     try {
         const html = getHtml(req.body);
 
-        browser = await chromium.puppeteer.launch({
+        // ** UPDATED BROWSER LAUNCH CONFIGURATION **
+        browser = await puppeteer.launch({
             args: chromium.args,
             defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath,
+            executablePath: await chromium.executablePath(),
             headless: chromium.headless,
-            ignoreHTTPSErrors: true,
         });
 
         const page = await browser.newPage();
@@ -73,7 +73,8 @@ module.exports = async (req, res) => {
 
         const pdf = await page.pdf({
             format: 'A4',
-            printBackground: true
+            printBackground: true,
+            margin: { top: '20mm', right: '20mm', bottom: '20mm', left: '20mm' }
         });
 
         res.setHeader('Content-Type', 'application/pdf');
@@ -82,7 +83,7 @@ module.exports = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).send("Error generating PDF");
+        res.status(500).send("Error generating PDF: " + error.message);
     } finally {
         if (browser !== null) {
             await browser.close();
