@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Preview</title>
+    <style>
+        /* --- Main Page and Preview Styles --- */
+        body { 
+            margin: 0; 
+            background-color: #f0f0f0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            font-family: Arial, sans-serif; 
+        }
+        .print-toolbar { 
+            background: #333; 
+            color: white; 
+            padding: 15px; 
+            width: 100%; 
+            text-align: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+            z-index: 100; 
+        }
+        .print-button { 
+            background: #16a34a; 
+            color: white; 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            border: none; 
+            cursor: pointer; 
+            margin-top: 10px; 
+        }
+        .document-container { 
+            background-color: #ffffff; 
+            width: 210mm; 
+            min-height: 297mm; 
+            margin: 20px; 
+            padding: 20mm; 
+            box-sizing: border-box; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+        }
+
+        /* --- PDF Document Specific Styles --- */
+        .pdf-content { 
+            font-family: 'Inter', sans-serif; 
+            font-size: 11pt; 
+            line-height: 1.3; 
+            position: relative; 
+        }
+        .header-section { text-align: center; margin-bottom: 10px; }
+        .header-section h1 { font-size: 14pt; font-weight: bold; margin-bottom: 5px; }
+        .header-section h2 { font-size: 12pt; font-weight: 600; margin-bottom: 3px; }
+        .header-section p { font-size: 9pt; margin-bottom: 2px; }
+        .header-section hr { border: none; border-top: 1px solid #9ca3af; margin-top: 10px; margin-bottom: 15px; }
+        .header-logo { position: absolute; left: 0; top: 0; width: 75px; height: auto; }
+        .main-title-section { text-align: center; margin-bottom: 10px; }
+        .main-title-section h3 { font-size: 16pt; font-weight: bold; }
+        .main-title-section h4 { font-size: 14pt; font-weight: 600; }
+        /* NEW: Removes extra spacing from title headings */
+        .main-title-section h3, .main-title-section h4 { margin: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10.5pt; }
+        th, td { border: 1.5px solid #6b7280; padding: 6px 10px; text-align: left; }
+        th { background-color: #f3f4f6; font-weight: 600; white-space: nowrap; }
+        td { vertical-align: top; }
+        .footer-signatures { display: flex; justify-content: space-between; margin-top: 15mm; font-size: 10pt; }
+        .footer-signatures div { width: 45%; }
+        .footer-signatures p { margin: 2px 0; }
+        .bottom-info-section { margin-top: 5mm; font-size: 9.5pt; }
+        .bottom-info-section ol { list-style: decimal; padding-left: 20px; margin-top: 5px; }
+        .font-bold { font-weight: bold; }
+        .font-semibold { font-weight: 600; }
+
+        /* --- Critical Print Styles --- */
+        @media print {
+            body { 
+                background-color: #ffffff; 
+                margin: 0;
+            }
+            .print-toolbar { 
+                display: none; 
+            }
+            .document-container { 
+                margin: 0; 
+                padding: 0; 
+                box-shadow: none; 
+                width: 100%;
+                min-height: initial;
+            }
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-toolbar">
+        <p>This is your print preview. Click the button to save.</p>
+        <button class="print-button" onclick="window.print()">🖨️ Save Final PDF</button>
+    </div>
+    <div class="document-container">
+        <div class="pdf-content">
+            <div class="header-section">
+                <img src="nhm_main _final.png" alt="Logo" class="header-logo">
+                <h1 class="font-bold">Government of Jammu & Kashmir</h1>
+                <h2 class="font-semibold">Office of the Chief Medical Officer/Convenor, DHS Kupwara</h2>
+                <p>E-mail:damkup@gmail.com,cmokupwara@yahoo.com Telephone/Fax No: 01955-25227</p>
+                <hr>
+            </div>
+            <div class="main-title-section">
+                <h3 class="font-bold">Tour Schedule of Medical Mobile Unit (MMU) Kupwara</h3>
+                <h4 class="font-semibold" id="month-year-heading"></h4>
+            </div>
+            <table id="scheduleTable">
+                <thead>
+                    <tr><th>S. No</th><th>Date of Event</th><th>Name of Venue</th><th>Name of Block</th></tr>
+                </thead>
+                <tbody id="schedule-table-body">
+                    </tbody>
+            </table>
+            <div class="footer-signatures">
+                <div class="left-sig">
+                    <!-- <p>I/C MMU Programme</p><p>District Kupwara</p> -->
+                     <p>District Programme Manager</p><p>NHM, Kupwara.</p>
+                </div>
+                <div class="right-sig" style="text-align:right;">
+                    <p>Convener&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p>District Health Society/&nbsp;&nbsp;</p>
+                    <p>Chief Medical Officer&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p>Kupwara&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                </div>
+            </div>
+            <div class="bottom-info-section">
+                <p>No:CMO/NHM/Kap/ <span class="font-bold">752-63</span></p>
+                <p>Dated: <span class="font-bold" id="doc-date"></span></p>
+                <p class="font-semibold" style="margin-top:1rem;">Copy to:</p>
+                <ol>
+                    <li>Mission Director National Health Mission J&K for favour of Information.</li>
+                    <li>Chairperson District Health Society /DDC Kupwara for favour of Information.</li>
+                    <li>Block Medical Officer Concerned for information and n/a</li>
+                    <li>MMU Team for information and compliance.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
