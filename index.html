@@ -19,40 +19,41 @@
         .btn-green { background-color: #16a34a; color: white; }
         .btn-red { background-color: #dc2626; color: white; padding: 5px 10px; font-size: 0.8rem; margin-top: 5px; }
         .entry-row { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-        #message { display: none; margin-top: 15px; font-weight: bold; text-align: center; }
-        .success { color: green; }
-        .error { color: red; }
+        #previewTable { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        #previewTable th, #previewTable td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        #message { margin-top: 15px; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
     <h1>MMU Tour Schedule - PDF Generator</h1>
     <div class="container">
-        <form id="pdfForm">
-            <div class="row">
-                <div class="form-group">
-                    <label for="month">Month</label>
-                    <small class="hint-text">e.g., 1 for Jan</small>
-                    <input id="month" name="month" type="number" min="1" max="12" required>
-                </div>
-                <div class="form-group">
-                    <label for="year">Year</label>
-                    <small class="hint-text">e.g., 2025</small>
-                    <input id="year" name="year" type="number" min="2000" max="2100" required>
-                </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="month">Month</label>
+                <small class="hint-text">e.g., 1 for Jan</small>
+                <input id="month" type="number" min="1" max="12" oninput="updatePreview()">
             </div>
-            <h2>Schedule Entries</h2>
-            <div id="entries"></div>
-            <button type="button" onclick="addRow()" class="btn btn-blue">+ Add Row</button>
-            <button type="submit" id="generateBtn" class="btn btn-green">Generate PDF</button>
-        </form>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <small class="hint-text">e.g., 2025</small>
+                <input id="year" type="number" min="2000" max="2100" oninput="updatePreview()">
+            </div>
+        </div>
+        <h2>Schedule Entries</h2>
+        <div id="entries"></div>
+        <button onclick="addRow()" class="btn btn-blue">+ Add Row</button>
+        <button id="generateBtn" class="btn btn-green">Generate PDF</button>
+        <h3>Preview of Entries</h3>
+        <table id="previewTable">
+            <thead><tr><th>S. No</th><th>Date</th><th>Venue</th><th>Block</th></tr></thead>
+            <tbody id="previewBody"></tbody>
+        </table>
         <p id="message"></p>
     </div>
 
-    
 <script>
     document.getElementById('year').value = new Date().getFullYear();
     document.getElementById('month').value = new Date().getMonth() + 1;
-    let entryCounter = 0;
 
     function addRow() {
         const entriesDiv = document.getElementById('entries');
@@ -60,82 +61,90 @@
         row.className = 'entry-row';
         row.innerHTML = `
             <label>Date (DD only)</label>
-            <input type="number" min="1" max="31" name="day_${entryCounter}" required>
+            <input type="number" min="1" max="31" class="date-field" oninput="updatePreview()">
             <label>Venue</label>
-            <input type="text" name="venue_${entryCounter}" required>
+            <input type="text" oninput="updatePreview()">
             <label>Block</label>
-            <input type="text" name="block_${entryCounter}" required>
-            <button type="button" class="btn btn-red" onclick="this.parentElement.remove()">Remove</button>
+            <input type="text" oninput="updatePreview()">
+            <button type="button" class="btn btn-red" onclick="this.parentElement.remove();updatePreview();">Remove</button>
         `;
         entriesDiv.appendChild(row);
-        entryCounter++;
+        updatePreview();
     }
 
-    document.getElementById('pdfForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+    function updatePreview() {
+        const month = document.getElementById('month').value;
+        const year = document.getElementById('year').value;
+        const rows = document.querySelectorAll('#entries .entry-row');
+        const tbody = document.getElementById('previewBody');
+        tbody.innerHTML = '';
+        if (!month || !year) return;
+
+        rows.forEach((row, i) => {
+            const inputs = row.querySelectorAll('input');
+            const day = inputs[0].value;
+            if (!day) return;
+            const fullDate = String(day).padStart(2, '0') + '.' + String(month).padStart(2, '0') + '.' + year;
+            tbody.innerHTML += `<tr><td>${i + 1}</td><td>${fullDate}</td><td>${inputs[1].value}</td><td>${inputs[2].value}</td></tr>`;
+        });
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
         const generateBtn = document.getElementById('generateBtn');
         const message = document.getElementById('message');
         
         generateBtn.disabled = true;
         generateBtn.textContent = 'Generating...';
         message.textContent = '';
-        message.style.display = 'none';
 
-        const formData = new FormData(e.target);
         const entries = [];
-        for (let i = 0; i < entryCounter; i++) {
-            if (formData.has(`day_${i}`)) {
+        document.querySelectorAll('#entries .entry-row').forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            if (inputs[0].value) {
                 entries.push({
-                    day: formData.get(`day_${i}`),
-                    venue: formData.get(`venue_${i}`),
-                    block: formData.get(`block_${i}`),
+                    day: inputs[0].value,
+                    venue: inputs[1].value,
+                    block: inputs[2].value,
                 });
             }
-        }
+        });
 
         const data = {
-            month: formData.get('month'),
-            year: formData.get('year'),
+            month: document.getElementById('month').value,
+            year: document.getElementById('year').value,
             entries: entries
         };
 
         try {
-            // This sends the data to the PDF engine
             const response = await fetch('/api/pdf', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
 
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.statusText}`);
-            }
-
+            if (!response.ok) throw new Error(`Server error`);
+            
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.style.display = 'none';
             a.href = url;
             const monthName = new Date(data.year, data.month - 1).toLocaleString('default', { month: 'long' });
             a.download = `MMU_Schedule_${monthName}_${data.year}.pdf`;
-            document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
             
             message.textContent = 'PDF downloaded successfully!';
-            message.className = 'success';
-            message.style.display = 'block';
-
+            message.style.color = 'green';
         } catch (error) {
             message.textContent = 'Failed to generate PDF. Please try again.';
-            message.className = 'error';
-            message.style.display = 'block';
-            console.error(error);
+            message.style.color = 'red';
         } finally {
             generateBtn.disabled = false;
             generateBtn.textContent = 'Generate PDF';
         }
     });
+    
+    // Initial setup
     addRow();
 </script>
 </body>
