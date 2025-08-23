@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@sparticuz/chromium": "131.0.0",
-    "puppeteer-core": "22.10.0"
+    "puppeteer-core": "22.10.0",
+    "node": "20.x"
   },
   "scripts": {
     "dev": "vercel dev",
