@@ -1,7 +1,9 @@
 {
-    "functions": {
-        "api/pdf.js": {
-            "maxDuration": 30
-        }
+  "functions": {
+    "api/pdf.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30,
+      "memory": 1024
     }
+  }
 }

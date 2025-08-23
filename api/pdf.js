@@ -1,58 +1,184 @@
 const chromium = require('@sparticuz/chromium');
 const puppeteer = require('puppeteer-core');
 
-function getHtml(data) {
-    const monthName = new Date(data.year, data.month - 1).toLocaleString('default', { month: 'long' });
-    const today = new Date();
-    const day = String(today.getDate()).padStart(2, '0');
-    const monthPadded = String(today.getMonth() + 1).padStart(2, '0');
-    const docDate = `${day}.${monthPadded}.${data.year}`;
-
-    let tableRows = '';
-    data.entries.forEach((entry, i) => {
-        const fullDate = String(entry.day).padStart(2, '0') + '.' + String(data.month).padStart(2, '0') + '.' + data.year;
-        tableRows += `<tr>
-            <td style="border: 1.5px solid #6b7280; padding: 6px 10px; vertical-align: top;">${i + 1}</td>
-            <td style="border: 1.5px solid #6b7280; padding: 6px 10px; vertical-align: top;">${fullDate}</td>
-            <td style="border: 1.5px solid #6b7280; padding: 6px 10px; vertical-align: top;">${entry.venue}</td>
-            <td style="border: 1.5px solid #6b7280; padding: 6px 10px; vertical-align: top;">${entry.block}</td>
-        </tr>`;
-    });
-
-    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:'Inter',Arial,sans-serif;font-size:11pt;line-height:1.3;color:#333}table{width:100%;border-collapse:collapse;font-size:10.5pt}p{margin:2px 0}</style></head><body><div style="position:relative;height:80px;text-align:center"><svg style="position:absolute;left:0;top:0;width:75px;height:auto" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg"><defs><path id="arc" d="M 60,150 A 140,140 0 0,1 340,150" fill="none"/></defs><circle cx="200" cy="150" r="120" fill="#d40f29"/><text font-family="Arial,sans-serif" font-size="36" font-weight="bold" fill="#000" letter-spacing="2"><textPath href="#arc" startOffset="50%" text-anchor="middle">NATIONAL HEALTH MISSION</textPath></text><g fill="#fff"><g transform="translate(200,100)" fill="#fddc02"><circle r="10"/><path d="M0-12V-16M12 0h4M0 12v4M-12 0h-4M9-9l3-3M-9 9l-3 3m-3-15 3 3M9 9l3 3" stroke="#fddc02" stroke-width="2"/></g><g transform="translate(130,140)"><circle cx="0" cy="0" r="12"/><rect x="-10" y="12" width="20" height="30" rx="5"/><rect x="-12" y="42" width="8" height="35" rx="4"/><rect x="4" y="42" width="8" height="35" rx="4"/></g><g transform="translate(270,140)"><circle cx="0" cy="0" r="12"/><path d="M-15 12h30l-7 30h-16z"/><rect x="-10" y="42" width="8" height="35" rx="4"/><rect x="2" y="42" width="8" height="35" rx="4"/></g><g transform="translate(200,160)"><circle cx="0" cy="0" r="9"/><path d="M-12 9h24l-5 23h-14z"/><rect x="-8" y="32" width="6" height="25" rx="3"/><rect x="2" y="32" width="6" height="25" rx="3"/></g><path d="M148 160c12 12 32 12 44-5M252 160c-12 12-32 12-44-5" stroke="#fff" stroke-width="4" fill="none"/></g><path d="M100 275h200" stroke="#000" stroke-width="2"/><text x="200" y="300" font-family="Arial,sans-serif" font-size="24" text-anchor="middle" font-weight="bold">राष्ट्रीय स्वास्थ्य मिशन</text></svg><h1 style="font-size:14pt;font-weight:bold;margin:0">Government of Jammu & Kashmir</h1><h2 style="font-size:12pt;font-weight:600;margin:3px 0">Office of the Chief Medical Officer/Convenor, DHS Kupwara</h2><p style="font-size:9pt;margin:2px 0">E-mail:damkup@gmail.com,cmokupwara@yahoo.com Telephone/Fax No: 01955-25227</p></div><hr style="border:0;border-top:1px solid #9ca3af;margin:15px 0 20px"><div style="text-align:center;margin-bottom:20px"><h3 style="font-size:16pt;font-weight:bold;margin:5px 0">Tour Schedule of Medical Mobile Unit (MMU) Kupwara</h3><h4 style="font-size:14pt;font-weight:600;margin:0">for the month of ${monthName} ${data.year}</h4></div><table><thead><tr style="background-color:#f3f4f6"><th style="border:1.5px solid #6b7280;padding:6px 10px;white-space:nowrap">S. No</th><th style="border:1.5px solid #6b7280;padding:6px 10px;white-space:nowrap">Date of Event</th><th style="border:1.5px solid #6b7280;padding:6px 10px;white-space:nowrap">Name of Venue</th><th style="border:1.5px solid #6b7280;padding:6px 10px;white-space:nowrap">Name of Block</th></tr></thead><tbody>${tableRows}</tbody></table><div style="display:flex;justify-content:space-between;margin-top:40px;font-size:10pt;page-break-inside:avoid"><div><p>District Programme Manager</p><p>NHM, Kupwara.</p></div><div style="text-align:right"><p>Convener</p><p>District Health Society/</p><p>Chief Medical Officer</p><p>Kupwara</p></div></div><div style="margin-top:20px;font-size:9.5pt;page-break-inside:avoid"><p style="margin-bottom:3px">No:CMO/NHM/Kap/ <span style="font-weight:bold">752-63</span></p><p style="margin-bottom:3px">Dated: <span style="font-weight:bold">${docDate}</span></p><p style="font-weight:600;margin-top:1rem">Copy to:</p><ol style="list-style:decimal;padding-left:20px;margin-top:5px;margin:0"><li style="margin-bottom:2px">Mission Director National Health Mission J&K for favour of Information.</li><li style="margin-bottom:2px">Chairperson District Health Society /DDC Kupwara for favour of Information.</li><li style="margin-bottom:2px">Block Medical Officer Concerned for information and n/a</li><li>MMU Team for information and compliance.</li></ol></div></body></html>`;
+// Escape helper
+function esc(str = '') {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
 }
 
+function buildHtml(data) {
+  const { month, year, entries } = data;
+  const monthInt = Number(month);
+  const yearInt = Number(year);
+  const monthName = new Date(yearInt, monthInt - 1).toLocaleString('default', { month: 'long' });
+  const today = new Date();
+  const todayDateStr = [
+    String(today.getDate()).padStart(2,'0'),
+    String(today.getMonth() + 1).padStart(2,'0'),
+    yearInt
+  ].join('.');
+
+  const tableRows = entries.map((e,i)=>{
+    const fullDate = `${String(e.day).padStart(2,'0')}.${String(monthInt).padStart(2,'0')}.${yearInt}`;
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${fullDate}</td>
+      <td>${esc(e.venue)}</td>
+      <td>${esc(e.block)}</td>
+    </tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>MMU Schedule ${esc(monthName)} ${yearInt}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  @page { size: A4; margin: 0; }
+  html, body { margin:0; padding:0; font-family: Arial, sans-serif; font-size:11pt; line-height:1.3; color:#111; }
+  .pdf-page {
+    width:210mm; height:297mm; box-sizing:border-box;
+    padding:20mm 20mm 15mm 20mm; position:relative;
+  }
+  .header { text-align:center; margin-bottom:10px; }
+  .header h1 { font-size:14pt; font-weight:700; margin:0 0 5px; }
+  .header h2 { font-size:12pt; font-weight:600; margin:0 0 3px; }
+  .header p { font-size:9pt; margin:0 0 2px; }
+  .header hr { border:none; border-top:1px solid #9ca3af; margin:10px 0 15px; }
+  .title { text-align:center; margin:0 0 10px; }
+  .title h3 { font-size:16pt; font-weight:700; margin:0 0 5px; }
+  .title h4 { font-size:14pt; font-weight:600; margin:0; }
+  table { width:100%; border-collapse:collapse; margin-top:10px; font-size:10.5pt; }
+  th, td { border:1.5px solid #6b7280; padding:6px 10px; text-align:left; vertical-align:top; }
+  th { background:#f3f4f6; font-weight:600; white-space:nowrap; }
+  .signatures { display:flex; justify-content:space-between; margin-top:15mm; font-size:10pt; }
+  .signatures div { width:45%; }
+  .signatures .right { text-align:right; }
+  .signatures p { margin:2px 0; }
+  .footer { margin-top:5mm; font-size:9.5pt; }
+  .footer p { margin:3px 0; }
+  .footer ol { margin:5px 0 0; padding-left:20px; }
+  .footer li { margin-bottom:2px; }
+  h1,h2,h3,h4 { page-break-after:avoid; }
+</style>
+</head>
+<body>
+  <div class="pdf-page">
+    <div class="header">
+      <h1>Government of Jammu &amp; Kashmir</h1>
+      <h2>Office of the Chief Medical Officer/Convenor, DHS Kupwara</h2>
+      <p>E-mail: damkup@gmail.com, cmokupwara@yahoo.com Telephone/Fax No: 01955-25227</p>
+      <hr />
+    </div>
+    <div class="title">
+      <h3>Tour Schedule of Medical Mobile Unit (MMU) Kupwara</h3>
+      <h4>for the month of ${esc(monthName)} ${yearInt}</h4>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>S. No</th>
+          <th>Date of Event</th>
+          <th>Name of Venue</th>
+          <th>Name of Block</th>
+        </tr>
+      </thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+    <div class="signatures">
+      <div>
+        <p>District Programme Manager</p>
+        <p>NHM, Kupwara.</p>
+      </div>
+      <div class="right">
+        <p>Convener</p>
+        <p>District Health Society/</p>
+        <p>Chief Medical Officer</p>
+        <p>Kupwara</p>
+      </div>
+    </div>
+    <div class="footer">
+      <p>No: CMO/NHM/Kap/ <strong>752-63</strong></p>
+      <p>Dated: <strong>${todayDateStr}</strong></p>
+      <p style="font-weight:600; margin-top:10px;">Copy to:</p>
+      <ol>
+        <li>Mission Director National Health Mission J&amp;K for favour of Information.</li>
+        <li>Chairperson District Health Society /DDC Kupwara for favour of Information.</li>
+        <li>Block Medical Officer Concerned for information and n/a</li>
+        <li>MMU Team for information and compliance.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+// Optional: in-file function config (alternative to vercel.json)
+module.exports.config = {
+  runtime: 'nodejs20.x'
+};
+
 module.exports = async (req, res) => {
-    let browser = null;
-    try {
-        const html = getHtml(req.body);
+  if (req.method !== 'POST') {
+    res.setHeader('Allow','POST');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-        browser = await puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: chromium.headless,
-        });
+  const { month, year, entries } = req.body || {};
+  if (!month || !year) {
+    return res.status(400).json({ error: 'Missing month or year' });
+  }
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return res.status(400).json({ error: 'Entries array required with at least one entry' });
+  }
 
-        const page = await browser.newPage();
-        await page.setContent(html, { waitUntil: 'domcontentloaded' });
+  const valid = entries.filter(e => e && e.day && +e.day >=1 && +e.day <=31);
+  if (valid.length === 0) {
+    return res.status(400).json({ error: 'No valid day entries in payload' });
+  }
 
-        const pdf = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            margin: { top: '20mm', right: '20mm', bottom: '20mm', left: '20mm' }
-        });
+  const html = buildHtml({ month, year, entries: valid });
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=schedule.pdf');
-        res.status(200).send(pdf);
-
-    } catch (error) {
-        console.error("Error generating PDF:", error);
-        res.status(500).send({ error: "Error generating PDF", details: error.message });
-    } finally {
-        if (browser !== null) {
-            await browser.close();
-        }
+  let browser;
+  try {
+    // Ensure headless mode (new Chrome uses headless "new" by default in recent versions; explicit is safe)
+    const executablePath = await chromium.executablePath();
+    if (!executablePath) {
+      throw new Error('Chromium executable path not found (chromium.executablePath returned null)');
     }
+
+    browser = await puppeteer.launch({
+      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: true
+    });
+
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: 'load' });
+
+    const pdf = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }
+    });
+
+    res.setHeader('Content-Type','application/pdf');
+    res.setHeader('Content-Disposition','attachment; filename="schedule.pdf"');
+    res.setHeader('Cache-Control','no-store');
+    return res.status(200).send(pdf);
+  } catch (err) {
+    console.error('Error generating PDF:', err);
+    return res.status(500).json({ error: 'PDF generation failed', details: err.message });
+  } finally {
+    if (browser) {
+      try { await browser.close(); } catch(_) {}
+    }
+  }
 };
