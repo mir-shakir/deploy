@@ -17,7 +17,16 @@
         .btn-blue { background-color: #3b82f6; color: white; }
         .btn-green { background-color: #16a34a; color: white; }
         .btn-red { background-color: #dc2626; color: white; padding: 5px 10px; font-size: 0.8rem; margin-top: 5px; }
-        .entry-row { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        .entry-row { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; position: relative; }
+        .btn-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border: none;
+            background: transparent;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
         #previewTable { width: 100%; border-collapse: collapse; margin-top: 15px; }
         #previewTable th, #previewTable td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     </style>
@@ -79,9 +88,25 @@
             <input type="text" oninput="updatePreview()">
             <label>Block</label>
             <input type="text" oninput="updatePreview()">
-            <button type="button" class="btn btn-red" onclick="this.parentElement.remove();updatePreview();">Remove</button>
+            <button type="button" class="btn-remove" onclick="this.parentElement.remove(); updatePreview();">&times;</button>
+            <button class="btn-move-up" onclick="moveRow(this, 'up')">🔼</button>
+            <button class="btn-move-down" onclick="moveRow(this, 'down')">🔽</button>
         `;
         entriesDiv.appendChild(row);
+        updatePreview();
+    }
+
+    function moveRow(buttonEl, direction) {
+        const row = buttonEl.parentElement;
+        if (direction === 'up') {
+            if (row.previousElementSibling) {
+                row.parentElement.insertBefore(row, row.previousElementSibling);
+            }
+        } else if (direction === 'down') {
+            if (row.nextElementSibling) {
+                row.parentElement.insertBefore(row.nextElementSibling, row);
+            }
+        }
         updatePreview();
     }
 
@@ -99,6 +124,18 @@
             if (!day) return;
             const fullDate = String(day).padStart(2, '0') + '.' + String(month).padStart(2, '0') + '.' + year;
             tbody.innerHTML += `<tr><td>${i + 1}</td><td>${fullDate}</td><td>${inputs[1].value}</td><td>${inputs[2].value}</td></tr>`;
+        });
+
+        updateButtonStates();
+    }
+
+    function updateButtonStates() {
+        const rows = document.querySelectorAll('#entries .entry-row');
+        rows.forEach((row, i) => {
+            const upButton = row.querySelector('.btn-move-up');
+            const downButton = row.querySelector('.btn-move-down');
+            upButton.disabled = i === 0;
+            downButton.disabled = i === rows.length - 1;
         });
     }
 
