@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@sparticuz/chromium": "123.0.1",
-    "puppeteer-core": "22.10.0"
+    "glob": "^13.0.6",
+    "marked": "^18.0.5",
+    "mermaid": "^11.15.0"
   }
 }
