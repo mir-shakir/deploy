@@ -58,21 +58,21 @@ You monitor the Canary's error rates and latency. If metrics look good, you grad
 
 ```mermaid
 graph TD
-    subgraph K8s Cluster
+    subgraph K8s_Cluster ["K8s Cluster"]
         Ingress[Ingress Controller / API Gateway]
 
-        subgraph Version 1 (Stable)
+        subgraph V1 ["Version 1 (Stable)"]
             V1A[Pod v1]
             V1B[Pod v1]
             V1C[Pod v1]
         end
 
-        subgraph Version 2 (Canary)
+        subgraph V2 ["Version 2 (Canary)"]
             V2A[Pod v2]
         end
 
-        Ingress -->|95% Traffic| Version 1
-        Ingress -->|5% Traffic| Version 2
+        Ingress -->|95% Traffic| V1
+        Ingress -->|5% Traffic| V2
     end
 ```
 
