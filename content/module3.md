@@ -25,7 +25,7 @@ These are the actual EC2 instances where your Spring Boot containers run.
 
 ```mermaid
 graph TD
-    subgraph K8s Control Plane [Control Plane (Managed by AWS EKS)]
+    subgraph ControlPlane ["Control Plane (Managed by AWS EKS)"]
         API[kube-apiserver]
         ETCD[(etcd Database)]
         SCHED[kube-scheduler]
@@ -36,7 +36,7 @@ graph TD
         API <--> CTRL
     end
 
-    subgraph Worker Node 1 [EC2 Instance: m5.large]
+    subgraph Worker1 ["Worker Node 1 (m5.large)"]
         K1[kubelet]
         P1[kube-proxy]
         PodA[Pod: User Service]
@@ -44,7 +44,7 @@ graph TD
         K1 --> PodA & PodB
     end
 
-    subgraph Worker Node 2 [EC2 Instance: m5.large]
+    subgraph Worker2 ["Worker Node 2 (m5.large)"]
         K2[kubelet]
         P2[kube-proxy]
         PodC[Pod: User Service]

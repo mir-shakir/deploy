@@ -21,16 +21,16 @@ Inside your VPC, you divide your IP space into **Subnets**. The fundamental rule
 
 ```mermaid
 graph TD
-    subgraph AWS Cloud
-        subgraph Your VPC [VPC: 10.0.0.0/16]
+    subgraph AWS_Cloud ["AWS Cloud"]
+        subgraph VPC ["Your VPC (10.0.0.0/16)"]
             IGW[Internet Gateway]
 
-            subgraph Public Subnet [Public Subnet: 10.0.0.0/24]
+            subgraph Public ["Public Subnet (10.0.0.0/24)"]
                 ALB[Application Load Balancer]
                 NAT[NAT Gateway]
             end
 
-            subgraph Private Subnet [Private Subnet: 10.0.1.0/24]
+            subgraph Private ["Private Subnet (10.0.1.0/24)"]
                 App[Spring Boot API]
                 DB[(Amazon RDS Postgres)]
             end

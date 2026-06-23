@@ -18,21 +18,21 @@ Amazon Elastic Compute Cloud (EC2) took hypervisors and put an API in front of t
 
 ```mermaid
 graph TD
-    subgraph Physical Server [AWS Physical Host (Bare Metal)]
+    subgraph PhysicalServer ["AWS Physical Host (Bare Metal)"]
         H[Nitro Hypervisor]
 
-        subgraph EC2 Instance A [Your EC2 Instance]
+        subgraph EC2_A ["Your EC2 Instance"]
             OS1[Guest OS: Ubuntu]
             JVM1[JVM]
             App1[Spring Boot App]
         end
 
-        subgraph EC2 Instance B [Another AWS Customer's Instance]
+        subgraph EC2_B ["Another AWS Customer's Instance"]
             OS2[Guest OS: Amazon Linux]
         end
 
-        H --> EC2 Instance A
-        H --> EC2 Instance B
+        H --> EC2_A
+        H --> EC2_B
     end
 ```
 
@@ -55,10 +55,10 @@ AWS Elastic Beanstalk is a classic PaaS. It abstracts away the raw EC2 provision
 flowchart LR
     Dev[Developer] -->|Uploads .jar| EB[Elastic Beanstalk Control Plane]
 
-    subgraph AWS Infrastructure Managed by Beanstalk
+    subgraph AWS_Infra ["AWS Infrastructure Managed by Beanstalk"]
         ALB[Application Load Balancer]
 
-        subgraph Auto Scaling Group
+        subgraph ASG ["Auto Scaling Group"]
             EC2_1[EC2 Instance - JVM]
             EC2_2[EC2 Instance - JVM]
         end
@@ -68,7 +68,7 @@ flowchart LR
     end
 
     EB -.->|Provisions & Configures| ALB
-    EB -.->|Provisions & Configures| Auto Scaling Group
+    EB -.->|Provisions & Configures| ASG
 ```
 
 ### The Magic of the Auto Scaling Group (ASG)
@@ -108,14 +108,14 @@ Multiple containers running on the same EC2 instance share the same underlying L
 
 ```mermaid
 graph TD
-    subgraph VM Approach
+    subgraph VM_Approach ["VM Approach"]
         Hardware1[Hardware] --> Hypervisor
         Hypervisor --> VM1[Guest OS 1] & VM2[Guest OS 2]
         VM1 --> App1[App + Bins/Libs]
         VM2 --> App2[App + Bins/Libs]
     end
 
-    subgraph Container Approach
+    subgraph Container_Approach ["Container Approach"]
         Hardware2[Hardware] --> HostOS[Host OS Linux Kernel]
         HostOS --> Engine[Container Runtime / Docker]
         Engine --> C1[Container: App1 + Libs] & C2[Container: App2 + Libs]
