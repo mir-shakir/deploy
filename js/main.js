@@ -49,22 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Custom renderer for Marked.js to handle Mermaid code blocks
-    const renderer = new marked.Renderer();
-    const originalCodeRenderer = renderer.code.bind(renderer);
+    // Custom renderer for Marked.js to handle Mermaid code blocks and syntax highlighting
+    marked.use({
+        extensions: [{
+            name: 'code',
+            renderer(token) {
+                if (token.lang === 'mermaid') {
+                    return `<div class="mermaid">${token.text}</div>\n`;
+                }
+                return false; // Fallback to default renderer
+            }
+        }]
+    });
 
-    renderer.code = function(code, language, isEscaped) {
-        if (language === 'mermaid') {
-            return `<div class="mermaid">${code}</div>`;
-        }
-        return originalCodeRenderer(code, language, isEscaped);
-    };
-
+    // Configure standard marked options
     marked.setOptions({
-        renderer: renderer,
         highlight: function(code, lang) {
             if (lang && lang !== 'mermaid' && hljs.getLanguage(lang)) {
                 return hljs.highlight(code, { language: lang }).value;
+            }
+            if (lang === 'mermaid') {
+                return code;
             }
             return hljs.highlightAuto(code).value;
         },
