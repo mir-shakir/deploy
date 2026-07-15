@@ -166,6 +166,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
+    // --- Smart Header Logic ---
+    const header = document.querySelector('.header');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', () => {
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Prevent negative scrolling from firing on iOS bounce
+        if (currentScroll < 0) return;
+
+        if (currentScroll < lastScrollTop && currentScroll > 60) {
+            // Scrolling up -> hide header (user requested UX)
+            header.classList.add('hidden-scroll');
+        } else {
+            // Scrolling down -> show header (user requested UX)
+            header.classList.remove('hidden-scroll');
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }, { passive: true });
+
     // --- Sidebar Toggle ---
     function toggleSidebar() {
         if (window.innerWidth <= 768) {
